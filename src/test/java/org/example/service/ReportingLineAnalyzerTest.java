@@ -32,7 +32,7 @@ class ReportingLineAnalyzerTest {
 
   @Test
   void testAnalyzeReportingLines() {
-    String expectedOutput = "Fiona has a reporting line that is too long by 1 levels\r\n";
+    String expectedOutput = "Fiona White has a reporting line that is too long by 1 levels\r\n";
     String output = analyzer.analyzeReportingLines(employees);
     assertEquals(expectedOutput, output);
   }
