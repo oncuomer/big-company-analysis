@@ -43,7 +43,7 @@ public String analyzeReportingLines(Map<Integer, EmployeeRecord> employees) {
   }
 
   private void appendReport(StringBuilder report, EmployeeRecord employee, int excessDepth) {
-    report.append(String.format("%s has a reporting line that is too long by %d levels%n",
-        employee.getFirstName(), excessDepth));
+    report.append(String.format("%s %s has a reporting line that is too long by %d levels%n",
+        employee.getFirstName(), employee.getLastName(), excessDepth));
   }
 }
