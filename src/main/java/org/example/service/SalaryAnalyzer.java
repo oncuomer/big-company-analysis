@@ -1,7 +1,6 @@
 package org.example.service;
 
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.example.model.Employee;
 
 public class SalaryAnalyzer {
@@ -29,22 +28,22 @@ public class SalaryAnalyzer {
    * subordinates' average salary.
    */
   public String analyzeSalaries(Map<Integer, Employee> employees) {
-    return employees.values().stream()
+    StringBuilder report = new StringBuilder();
+    employees.values().stream()
         .filter(manager -> !manager.getSubordinates().isEmpty())
-        .map(this::evaluateManagerSalary)
-        .collect(Collectors.joining());
+        .forEach(manager -> evaluateManagerSalary(manager, report));
+    return report.toString();
   }
 
-  private String evaluateManagerSalary(Employee manager) {
+  private void evaluateManagerSalary(Employee manager, StringBuilder report) {
     double avgSalary = calculateAverageSubordinateSalary(manager);
     double minSalary = avgSalary * MIN_PERCENTAGE_DIFF;
     double maxSalary = avgSalary * MAX_PERCENTAGE_DIFF;
 
-    return generateReportLine(manager, minSalary, maxSalary);
+    generateReportLine(manager, minSalary, maxSalary, report);
   }
 
-  private String generateReportLine(Employee manager, double minSalary, double maxSalary) {
-    StringBuilder report = new StringBuilder();
+  private void generateReportLine(Employee manager, double minSalary, double maxSalary, StringBuilder report) {
     double salary = manager.getSalary();
 
     if (salary < minSalary) {
@@ -55,8 +54,6 @@ public class SalaryAnalyzer {
       report.append(String.format("%d|%s %s earns more than they should by %.2f%n",
           manager.getId(), manager.getFirstName(), manager.getLastName(), salary - maxSalary));
     }
-
-    return report.toString();
   }
 
   private double calculateAverageSubordinateSalary(Employee manager) {
