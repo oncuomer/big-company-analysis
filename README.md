@@ -15,7 +15,8 @@ salaries, and determine the reporting lines of each employee up to the CEO.
   will report any manager whose salary:
     - Is less than 20% above the average salary of their direct subordinates.
     - Exceeds 50% above the average salary of their direct subordinates.
-- **Reporting Line Trace**: Determine and display the reporting hierarchy for any given employee.
+- **Reporting Line Trace**: Determines which employees have an excessively long reporting line and
+   by what extent.
 
 ## Structure
 
