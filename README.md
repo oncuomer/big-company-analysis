@@ -22,18 +22,20 @@ salaries, and determine the reporting lines of each employee up to the CEO.
 The project consists of several key components organized into packages:
 
 1. **Model**
-    - `EmployeeRecord` - Represents a single employee's data.
+    - `Employee` - Represents a single employee's data.
 
 2. **Repository**
     - `EmployeeRepository` - Handles parsing of the CSV file and storage of employee records.
 
 3. **Analyzer**
-    - `ReportingLineAnalyzer` - Provides methods to analyze and trace reporting lines within the
-      organization.
-    - `SalaryAnalyzer` - Facilitates calculations and analysis related to employees salaries.
+    - `ReportingLineAnalyzer` - Analyzes and traces reporting lines within the organization to
+      ensure they are not excessively long.
+    - `SalaryAnalyzer` -Handles the evaluation of managers' salaries against their team's average.
+      It identifies managers who are paid significantly more or less than their team.
 
 4. **Main Application**
-    - `BigCompanyAnalysis` - The starting point of the program, bringing together all components and executes `ApplicationRunner` 
+    - `BigCompanyAnalysis` - The starting point of the program, bringing together all components and
+      executes `EmployeeAnalyzerRunner`
 
 ## Getting Started
 
@@ -63,10 +65,28 @@ Execute the following command to clean the target/ directory, compile the source
 target/classes, and run any tests configured in the project:
 
 ```bash
-mvn clean compile test
+mvn clean package
 ```
 
 #### 3. Use Maven to start the application by running
+
+This application requires a CSV file with employee data to run. You can either specify a path to
+your custom CSV file or use the default CSV file provided with the application.
+
+##### Using a Custom CSV File
+
+To specify your own CSV file, add the `-Dexec.args` option followed by the file path when you launch
+the application. Here is how you can do it:
+
+```bash
+mvn exec:java -D"exec.args"="src/main/resources/employees.csv" 
+```
+
+##### Using the Default CSV File
+
+If you do not specify a custom file, the application will automatically use the default CSV file
+located at src/main/resources/employees.csv.
+To run the application using the default file, use the following command:
 
 ```bash
 mvn exec:java

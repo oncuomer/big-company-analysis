@@ -1,18 +1,18 @@
 package org.example.service;
 
 
-import org.example.model.EmployeeRecord;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.HashMap;
+import java.util.Map;
+import org.example.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Map;
-import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SalaryAnalyzerTest {
 
   private SalaryAnalyzer analyzer;
-  private Map<Integer, EmployeeRecord> employees;
+  private Map<Integer, Employee> employees;
 
   @BeforeEach
   void setup() {
@@ -23,9 +23,9 @@ class SalaryAnalyzerTest {
   @Test
   void testUnderPaidManager() {
     // given
-    EmployeeRecord manager = new EmployeeRecord(1, "Alice", "Smith", 40000, null);
-    EmployeeRecord subordinate1 = new EmployeeRecord(2, "Bob", "Jones", 30000, 1);
-    EmployeeRecord subordinate2 = new EmployeeRecord(3, "Charlie", "Brown", 40000, 1);
+    Employee manager = new Employee(1, "Alice", "Smith", 40000, null);
+    Employee subordinate1 = new Employee(2, "Bob", "Jones", 30000, 1);
+    Employee subordinate2 = new Employee(3, "Charlie", "Brown", 40000, 1);
 
     manager.addSubordinate(subordinate1);
     manager.addSubordinate(subordinate2);
@@ -33,7 +33,7 @@ class SalaryAnalyzerTest {
     employees.put(1, manager);
     employees.put(2, subordinate1);
     employees.put(3, subordinate2);
-    String expectedOutput = "Alice Smith earns less than they should by 2000.00\r\n";
+    String expectedOutput = "1|Alice Smith earns less than they should by 2000.00\r\n";
 
     // when
     String output = analyzer.analyzeSalaries(employees);
@@ -45,9 +45,9 @@ class SalaryAnalyzerTest {
   @Test
   void testOverPaidManager() {
     // given
-    EmployeeRecord manager = new EmployeeRecord(1, "Alice", "Smith", 55000, null);
-    EmployeeRecord subordinate1 = new EmployeeRecord(2, "Bob", "Jones", 30000, 1);
-    EmployeeRecord subordinate2 = new EmployeeRecord(3, "Charlie", "Brown", 40000, 1);
+    Employee manager = new Employee(1, "Alice", "Smith", 55000, null);
+    Employee subordinate1 = new Employee(2, "Bob", "Jones", 30000, 1);
+    Employee subordinate2 = new Employee(3, "Charlie", "Brown", 40000, 1);
 
     manager.addSubordinate(subordinate1);
     manager.addSubordinate(subordinate2);
@@ -56,7 +56,7 @@ class SalaryAnalyzerTest {
     employees.put(2, subordinate1);
     employees.put(3, subordinate2);
 
-    String expectedOutput = "Alice Smith earns more than they should by 2500.00\r\n";
+    String expectedOutput = "1|Alice Smith earns more than they should by 2500.00\r\n";
 
     // when
     String output = analyzer.analyzeSalaries(employees);

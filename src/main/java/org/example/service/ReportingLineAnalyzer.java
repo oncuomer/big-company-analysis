@@ -1,17 +1,33 @@
 package org.example.service;
 
-import java.util.HashMap;
 import java.util.Map;
-import org.example.model.EmployeeRecord;
+import org.example.model.Employee;
 
 public class ReportingLineAnalyzer {
-public String analyzeReportingLines(Map<Integer, EmployeeRecord> employees) {
+
+
+  /**
+   * The maximum allowed depth for a reporting line.
+   */
+  private static final int MAXIMUM_DEPTH = 4;
+
+  /**
+   * Checks each employee's reporting line to see if it's too long. This method creates a report
+   * that lists employees whose number of reporting levels exceeds the allowed limit of 4. For each
+   * such employee, the report includes their ID, first name, last name, and how many levels they
+   * are over the limit.
+   *
+   * @param employees A map with employee IDs as keys and Employee objects as values, representing
+   *                  all employees in the organization.
+   * @return A string listing all employees with reporting lines that are too long, and by how many
+   * levels they exceed the limit.
+   */
+  public String analyzeReportingLines(Map<Integer, Employee> employees) {
     StringBuilder report = new StringBuilder();
-    Map<Integer, Integer> depthCache = new HashMap<>();
 
     employees.values().forEach(employee -> {
-      int depth = calculateReportingLineDepth(employee, employees, depthCache);
-      if (depth > 4) {
+      int depth = calculateReportingLineDepth(employee, employees);
+      if (depth > MAXIMUM_DEPTH) {
         appendReport(report, employee, depth - 4);
       }
     });
@@ -19,31 +35,22 @@ public String analyzeReportingLines(Map<Integer, EmployeeRecord> employees) {
     return report.toString();
   }
 
-  private int calculateReportingLineDepth(EmployeeRecord employee,
-      Map<Integer, EmployeeRecord> employees,
-      Map<Integer, Integer> depthCache) {
-    if (depthCache.containsKey(employee.getId())) {
-      return depthCache.get(employee.getId());
-    }
-
+  private int calculateReportingLineDepth(Employee employee, Map<Integer, Employee> employees) {
     int depth = 0;
-    EmployeeRecord current = employee;
+    Employee current = employee;
 
     while (current.getManagerId() != null && employees.containsKey(current.getManagerId())) {
-      if (depthCache.containsKey(current.getManagerId())) {
-        depth += depthCache.get(current.getManagerId()) + 1;
-        break;
-      }
       current = employees.get(current.getManagerId());
       depth++;
     }
-
-    depthCache.put(employee.getId(), depth);
     return depth;
   }
 
-  private void appendReport(StringBuilder report, EmployeeRecord employee, int excessDepth) {
-    report.append(String.format("%s %s has a reporting line that is too long by %d levels%n",
-        employee.getFirstName(), employee.getLastName(), excessDepth));
+  private void appendReport(StringBuilder report, Employee employee, int excessDepth) {
+    report.append(String.format("%d|%s %s has a reporting line that is too long by %d levels%n",
+        employee.getId(),
+        employee.getFirstName(),
+        employee.getLastName(),
+        excessDepth));
   }
 }
