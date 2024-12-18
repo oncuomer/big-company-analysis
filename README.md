@@ -44,7 +44,6 @@ To run this project, you will need to:
 1. Ensure you have Java (version 17 or later) installed on your computer.
 2. Download or clone this repository to your local machine.
 3. Place the CSV file containing employee data in a known directory.
-4. Update the `filePath` variable in `BigCompanyAnalysis.java` with the path to your CSV file.
 
 ## Running the Program
 
